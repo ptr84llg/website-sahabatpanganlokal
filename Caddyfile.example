@@ -6,3 +6,14 @@ redir /status.html /status/ 301
 
 @staticAssets path /assets/*
 header @staticAssets Cache-Control "public, max-age=604800"
+# GAME UPDATE DISTRIBUTION START
+# `/updates/` adalah namespace terpisah dari `/assets/`.
+@gameUpdateManifest path /updates/manifest.json
+header @gameUpdateManifest Cache-Control "no-store, max-age=0"
+
+@gameUpdateSchema path /updates/manifest.schema.json
+header @gameUpdateSchema Cache-Control "public, max-age=3600"
+
+@gameUpdatePackages path /updates/content/*
+header @gameUpdatePackages Cache-Control "public, max-age=31536000, immutable"
+# GAME UPDATE DISTRIBUTION END

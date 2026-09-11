@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "channel": "stable",
+  "generated_at": "2026-09-12T00:00:00+07:00",
+  "app": {
+    "version": "1.0.0",
+    "version_code": 100,
+    "min_supported_version_code": 100,
+    "force_update": false,
+    "store_url": "",
+    "release_notes": []
+  },
+  "content": {
+    "available": false,
+    "required": false,
+    "version": "2026.09.12.1",
+    "required_app_version_code": 100,
+    "format": "pck",
+    "url": "",
+    "size": 0,
+    "sha256": ""
+  },
+  "save": {
+    "schema_version": 1
+  }
+}

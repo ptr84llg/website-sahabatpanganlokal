@@ -330,13 +330,24 @@ class SiteContractTests(unittest.TestCase):
             'assets/asset-manifest.json',
             'assets/site.css',
             'scripts/prepare-assets.ps1',
-            'qa',
             'favicon.png',
             'icon-512.png',
             'site.webmanifest',
         ]
         for rel in legacy:
             self.assertFalse((ROOT / rel).exists(), rel)
+
+        qa_root = ROOT / 'qa'
+        self.assertTrue(qa_root.is_dir(), 'qa')
+        qa_files = sorted(
+            path.relative_to(ROOT).as_posix()
+            for path in qa_root.rglob('*')
+            if path.is_file()
+        )
+        self.assertEqual(
+            qa_files,
+            ['qa/update-system-verification.txt'],
+        )
 
         character_root = ROOT / 'assets/characters'
         self.assertEqual(

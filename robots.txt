@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /updates/
 Sitemap: https://sahabatpanganlokal.id/sitemap.xml

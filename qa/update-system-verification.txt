@@ -1,0 +1,82 @@
+SAHABAT PANGAN LOKAL - UPDATE SYSTEM VERIFICATION
+=================================================
+Generated: 2026-09-12 01:53:51 +07:00
+Implementation parent: 3a44cdc24c61b9995d663f683aa217d531df1406
+
+Scope
+-----
+WEB-U01..WEB-U07: completed locally
+WEB-U08 production deploy: not executed
+
+Endpoint contract
+-----------------
+Manifest: https://sahabatpanganlokal.id/updates/manifest.json
+Schema: https://sahabatpanganlokal.id/updates/manifest.schema.json
+PCK path: https://sahabatpanganlokal.id/updates/content/<content_version>/spl-content-<content_version>.pck
+schema_version: 1
+channel: stable
+
+Bootstrap values
+----------------
+app.version=1.0.0
+app.version_code=100
+app.min_supported_version_code=100
+content.available=false
+content.required=false
+content.version=2026.09.12.1
+content.required_app_version_code=100
+content.format=pck
+content.url=
+content.size=0
+content.sha256=
+save.schema_version=1
+
+Cache policy contract
+---------------------
+/updates/manifest.json: no-store, max-age=0
+/updates/manifest.schema.json: public, max-age=3600
+/updates/content/*: public, max-age=31536000, immutable
+
+Local verification
+------------------
+UPDATE_MANIFEST_SCHEMA_VALIDATION=PASS
+UPDATE_TEST_SUITE=PASS
+EXISTING_SITE_TEST_SUITE=PASS
+COMBINED_TEST_SUITE=PASS
+NO_PUBLIC_UI_SOURCE_CHANGE=TRUE
+FAKE_PCK_CREATED=FALSE
+LEGACY_ASSET_MANIFEST_REINTRODUCED=FALSE
+NO_SECRET_ADDED_BY_IMPLEMENTATION=TRUE
+
+Release invariant
+-----------------
+Binary PCK is uploaded and verified first.
+Manifest is published last.
+Released versioned PCK paths are immutable.
+Rollback changes manifest pointer; it does not overwrite old packages.
+
+Production status
+-----------------
+PRODUCTION_DEPLOYED=FALSE
+PRODUCTION_ENDPOINT_VERIFIED=FALSE
+WEB_U08_REQUIRED=TRUE
+WEB-U08 Production Verification
+-------------------------------
+verified_at=2026-09-12 02:25:58 +07:00
+server=server.sahabatpanganlokal.id
+server_ip=202.10.45.184
+web_root=/var/www/sahabatpanganlokal
+caddy_config=/etc/caddy/Caddyfile
+manifest_url=https://sahabatpanganlokal.id/updates/manifest.json
+schema_url=https://sahabatpanganlokal.id/updates/manifest.schema.json
+manifest_sha256=e181702bee57499049d5a28dd8c450ba122deaf200a7446209ac2d80539820a4
+schema_sha256=bfd19555554898bc1fadb290828e8f13c87153312b8940639459f4570d9f37cc
+manifest_cache_control=no-store, max-age=0
+schema_cache_control=public, max-age=3600
+content_cache_control=public, max-age=31536000, immutable
+ORIGIN_ENDPOINT_VERIFICATION=PASS
+PUBLIC_ENDPOINT_VERIFICATION=PASS
+WINDOWS_PUBLIC_ENDPOINT_VERIFICATION=PASS
+PRODUCTION_DEPLOYED=TRUE
+PRODUCTION_ENDPOINT_VERIFIED=TRUE
+SERVER_CONTRACT_READY_FOR_GODOT=TRUE
