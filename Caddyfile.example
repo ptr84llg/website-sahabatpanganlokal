@@ -1,0 +1,8 @@
+# Snippet untuk digabungkan ke site block Caddy Sahabat Pangan Lokal yang aktif.
+# Pertahankan directive `root` produksi yang sudah digunakan pada server aktual.
+
+redir /privacy.html /privasi/ 301
+redir /status.html /status/ 301
+
+@staticAssets path /assets/*
+header @staticAssets Cache-Control "public, max-age=604800"

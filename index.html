@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b7a3a">
+  <link rel="icon" type="image/webp" href="/assets/brand/logo_game.webp">
+  <link rel="apple-touch-icon" href="/assets/brand/logo_game.png">
+  <meta name="description" content="Sahabat Pangan Lokal adalah permainan edukasi yang mengajak anak mengenal pangan di sekitar melalui petualangan yang dekat dengan keseharian.">
+  <title>Sahabat Pangan Lokal — Petualangan Pangan Lokal</title>
+  <link rel="preload" as="image" href="/assets/backgrounds/bg-main-menu.png">
+  <link rel="stylesheet" href="/assets/vendor/bootstrap-5.3.8.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" onerror="this.onerror=null;this.href='/assets/vendor/bootstrap-fallback-5.3.6.min.css'">
+  <link rel="stylesheet" href="/assets/vendor/swiper-14.2.0.min.css">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script defer src="/assets/vendor/bootstrap-5.3.8.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" onerror="this.onerror=null;this.src='/assets/vendor/bootstrap-fallback-5.3.6.bundle.min.js'"></script>
+  <script defer src="/assets/vendor/gsap-3.15.0.min.js"></script>
+  <script defer src="/assets/vendor/ScrollTrigger-3.15.0.min.js"></script>
+  <script defer src="/assets/vendor/swiper-14.2.0.min.js"></script>
+  <script defer src="/assets/js/site-config.js"></script>
+  <script defer src="/assets/js/site-components.js"></script>
+  <script defer src="/assets/js/site.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+
+  <spl-navbar data-page="home"></spl-navbar>
+
+  <main id="main-content">
+    <section data-primary-section id="hero" class="hero-section" aria-labelledby="hero-title">
+      <div class="hero-bg-wrap" aria-hidden="true">
+        <img class="hero-bg-img" src="/assets/backgrounds/bg-main-menu.png" alt="">
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-vignette" aria-hidden="true"></div>
+
+      <div class="container h-100 position-relative">
+        <div class="row hero-content-row align-items-center g-0">
+          <div class="col-lg-5 d-flex align-items-center">
+            <div class="hero-copy-card">
+              <img data-hero-enter="logo" class="hero-logo" src="/assets/brand/logo_game.png" alt="Logo Sahabat Pangan Lokal" width="1312" height="1199">
+              <p data-hero-enter="eyebrow" class="eyebrow">Petualangan Pangan Lokal</p>
+              <h1 data-hero-enter="title" id="hero-title" class="hero-title">Petualangan seru dimulai dari pangan di sekitar kita.</h1>
+              <p data-hero-enter="lead" class="hero-lead">Kenali pangan lokal melalui perjalanan yang dekat dengan keseharian, penuh aktivitas sederhana, dan menyenangkan untuk dimainkan.</p>
+              <div data-hero-enter="actions" class="d-flex flex-wrap gap-2">
+                <a class="spl-btn spl-btn-primary" href="#tentang-singkat">Mulai Menjelajah <span aria-hidden="true">↓</span></a>
+                <a class="spl-btn spl-btn-light" href="/status/">Lihat Kabar</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7 hero-stage" aria-label="Empat karakter Sahabat Pangan Lokal">
+            <div class="hero-ground-glow" aria-hidden="true"></div>
+            <div class="hero-character hero-character--1"><div class="hero-character-parallax"><img src="/assets/characters/hero/character-01-happy.png" alt="Karakter Sahabat Pangan Lokal 1" width="1254" height="1254"></div></div>
+            <div class="hero-character hero-character--2"><div class="hero-character-parallax"><img src="/assets/characters/hero/character-02-happy.png" alt="Karakter Sahabat Pangan Lokal 2" width="1254" height="1254"></div></div>
+            <div class="hero-character hero-character--3"><div class="hero-character-parallax"><img src="/assets/characters/hero/character-03-happy.png" alt="Karakter Sahabat Pangan Lokal 3" width="1254" height="1254"></div></div>
+            <div class="hero-character hero-character--4"><div class="hero-character-parallax"><img src="/assets/characters/hero/character-04-happy.png" alt="Karakter Sahabat Pangan Lokal 4" width="1254" height="1254"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-primary-section id="tentang-singkat" class="about-section" aria-labelledby="about-title">
+      <div class="about-orb about-orb-a" aria-hidden="true"></div>
+      <div class="about-orb about-orb-b" aria-hidden="true"></div>
+      <div class="container">
+        <div class="row align-items-center g-5 g-xl-6">
+          <div class="col-lg-7">
+            <div class="journey-stage">
+              <div class="journey-board" aria-label="Urutan petualangan Rumah, Sekolah, Pasar, Dapur, hingga Festival">
+                <div class="journey-board-head">
+                  <div class="journey-board-chip">5 tempat • 5 tantangan</div>
+                  <p class="journey-board-intro">Ikuti alurnya dari kiri ke kanan.</p>
+                </div>
+
+                <div class="journey-flow" role="list" aria-label="Urutan tempat dalam permainan">
+                  <article class="journey-node journey-node--1" data-journey-node role="listitem">
+                    <span class="journey-node-badge">01</span>
+                    <figure class="journey-node-figure">
+                      <img class="journey-node-image" src="/assets/journey-places/01-rumah.png" alt="Ikon Rumah">
+                    </figure>
+                    <h3>Rumah</h3>
+                    <p>Mulai mengenal pangan di sekitar.</p>
+                  </article>
+
+                  <article class="journey-node journey-node--2" data-journey-node role="listitem">
+                    <span class="journey-node-badge">02</span>
+                    <figure class="journey-node-figure">
+                      <img class="journey-node-image" src="/assets/journey-places/02-sekolah.png" alt="Ikon Sekolah">
+                    </figure>
+                    <h3>Sekolah</h3>
+                    <p>Belajar mengelompokkan pangan.</p>
+                  </article>
+
+                  <article class="journey-node journey-node--3" data-journey-node role="listitem">
+                    <span class="journey-node-badge">03</span>
+                    <figure class="journey-node-figure">
+                      <img class="journey-node-image" src="/assets/journey-places/03-pasar.png" alt="Ikon Pasar">
+                    </figure>
+                    <h3>Pasar</h3>
+                    <p>Memilih bahan untuk dibawa pulang.</p>
+                  </article>
+
+                  <article class="journey-node journey-node--4" data-journey-node role="listitem">
+                    <span class="journey-node-badge">04</span>
+                    <figure class="journey-node-figure">
+                      <img class="journey-node-image" src="/assets/journey-places/04-dapur.png" alt="Ikon Dapur">
+                    </figure>
+                    <h3>Dapur</h3>
+                    <p>Mengenal cara mengolah bahan.</p>
+                  </article>
+
+                  <article class="journey-node journey-node--5" data-journey-node role="listitem">
+                    <span class="journey-node-badge">05</span>
+                    <figure class="journey-node-figure">
+                      <img class="journey-node-image" src="/assets/journey-places/05-festival.png" alt="Ikon Festival">
+                    </figure>
+                    <h3>Festival</h3>
+                    <p>Menyelesaikan tantangan terakhir.</p>
+                  </article>
+                </div>
+
+                <div class="journey-order-pill" aria-hidden="true">
+                  <span>Rumah</span><i>→</i><span>Sekolah</span><i>→</i><span>Pasar</span><i>→</i><span>Dapur</span><i>→</i><span>Festival</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5" data-reveal="right">
+            <p class="eyebrow">Apa Itu Sahabat Pangan Lokal?</p>
+            <h2 id="about-title" class="section-title">Belajar sambil berpetualang.</h2>
+            <p class="section-copy">Pemain diajak mengenal pangan di sekitar melalui perjalanan dari rumah, sekolah, pasar, dapur, hingga festival.</p>
+            <p class="section-copy">Di setiap tempat ada aktivitas dan tantangan sederhana yang membuat proses mengenal pangan terasa dekat, ringan, dan menyenangkan.</p>
+            <a class="text-link" href="/tentang/">Kenali Sahabat Pangan Lokal <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-primary-section id="pangan" class="foods-section" aria-labelledby="foods-title">
+      <div class="container foods-container">
+        <div class="foods-shell">
+          <div class="foods-header">
+            <div class="foods-heading" data-reveal="up">
+              <div class="foods-heading-topline">
+                <p class="eyebrow mb-0">Kenali Pangan Lokal</p>
+                <span class="foods-count-badge">14 Pangan</span>
+              </div>
+              <h2 id="foods-title" class="section-title foods-title">Kenali pangan lokal dalam petualanganmu.</h2>
+              <p class="section-copy foods-copy">Pilih kartu untuk memfokuskan pangan, lalu buka detailnya untuk mengenal lebih dekat.</p>
+            </div>
+
+            <div class="foods-nav-wrap" aria-label="Kontrol carousel pangan lokal">
+              <button class="swiper-button-prev spl-food-prev" type="button" aria-label="Pangan sebelumnya">
+                <svg class="foods-nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M15 18 9 12l6-6"></path>
+                </svg>
+              </button>
+              <div class="foods-counter" aria-live="polite">
+                <strong data-food-current>01</strong>
+                <span class="foods-counter-separator">/</span>
+                <span data-food-total>14</span>
+              </div>
+              <button class="swiper-button-next spl-food-next" type="button" aria-label="Pangan berikutnya">
+                <svg class="foods-nav-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="m9 18 6-6-6-6"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="foods-stage" data-reveal="up">
+            <div class="swiper spl-food-swiper" aria-label="Pangan lokal">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Beras" data-food-group="Pangan pokok" data-food-description="Sumber energi yang dekat dengan keseharian dan menjadi salah satu pangan pokok yang paling dikenal." data-food-image="/assets/foods/food_rice.png">
+                    <div class="food-card-top"><span class="food-chip">Pangan pokok</span><span class="food-index">01</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_rice.png" alt="Beras"></div>
+                    <div class="food-body"><h3>Beras</h3><p class="food-caption">Sumber energi yang sering dimakan sehari-hari.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Beras"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Singkong" data-food-group="Umbi" data-food-description="Umbi lokal yang dapat direbus, digoreng, dikukus, atau diolah menjadi beragam makanan." data-food-image="/assets/foods/food_cassava.png">
+                    <div class="food-card-top"><span class="food-chip">Umbi</span><span class="food-index">02</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_cassava.png" alt="Singkong"></div>
+                    <div class="food-body"><h3>Singkong</h3><p class="food-caption">Umbi yang bisa direbus, digoreng, atau diolah.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Singkong"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Ubi Jalar" data-food-group="Umbi" data-food-description="Umbi dengan rasa manis alami yang dapat dinikmati sebagai pangan pokok alternatif maupun camilan." data-food-image="/assets/foods/food_sweet_potato.png">
+                    <div class="food-card-top"><span class="food-chip">Umbi</span><span class="food-index">03</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_sweet_potato.png" alt="Ubi jalar"></div>
+                    <div class="food-body"><h3>Ubi Jalar</h3><p class="food-caption">Rasanya manis dan cocok menjadi camilan.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Ubi Jalar"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Jagung" data-food-group="Pangan pokok" data-food-description="Biji-bijian yang dapat dikonsumsi langsung setelah dimasak atau dijadikan bahan berbagai olahan." data-food-image="/assets/foods/food_corn.png">
+                    <div class="food-card-top"><span class="food-chip">Pangan pokok</span><span class="food-index">04</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_corn.png" alt="Jagung"></div>
+                    <div class="food-body"><h3>Jagung</h3><p class="food-caption">Bisa dimakan langsung atau dijadikan berbagai olahan.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Jagung"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Kangkung" data-food-group="Sayuran" data-food-description="Sayuran hijau yang mudah ditemukan dan sering diolah menjadi tumisan atau hidangan pendamping." data-food-image="/assets/foods/food_water_spinach.png">
+                    <div class="food-card-top"><span class="food-chip">Sayuran</span><span class="food-index">05</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_water_spinach.png" alt="Kangkung"></div>
+                    <div class="food-body"><h3>Kangkung</h3><p class="food-caption">Sayuran hijau yang akrab di meja makan.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Kangkung"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Bayam" data-food-group="Sayuran" data-food-description="Sayuran berdaun hijau yang umum dimasak menjadi sayur bening maupun aneka olahan sederhana." data-food-image="/assets/foods/food_spinach.png">
+                    <div class="food-card-top"><span class="food-chip">Sayuran</span><span class="food-index">06</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_spinach.png" alt="Bayam"></div>
+                    <div class="food-body"><h3>Bayam</h3><p class="food-caption">Sering diolah menjadi sayur bening.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Bayam"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Timun" data-food-group="Sayuran" data-food-description="Sayuran segar dengan kandungan air tinggi yang kerap disajikan langsung sebagai lalapan." data-food-image="/assets/foods/food_cucumber.png">
+                    <div class="food-card-top"><span class="food-chip">Sayuran</span><span class="food-index">07</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_cucumber.png" alt="Timun"></div>
+                    <div class="food-body"><h3>Timun</h3><p class="food-caption">Segar disantap langsung atau menjadi lalapan.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Timun"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Terong" data-food-group="Sayuran" data-food-description="Sayuran yang mudah dikenali dan dapat dimasak menjadi berbagai hidangan rumahan." data-food-image="/assets/foods/food_eggplant.png">
+                    <div class="food-card-top"><span class="food-chip">Sayuran</span><span class="food-index">08</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_eggplant.png" alt="Terong"></div>
+                    <div class="food-body"><h3>Terong</h3><p class="food-caption">Sayuran yang lezat untuk berbagai masakan.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Terong"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Pisang" data-food-group="Buah" data-food-description="Buah yang mudah dimakan langsung dan juga dapat diolah menjadi camilan manis maupun gurih." data-food-image="/assets/foods/food_banana.png">
+                    <div class="food-card-top"><span class="food-chip">Buah</span><span class="food-index">09</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_banana.png" alt="Pisang"></div>
+                    <div class="food-body"><h3>Pisang</h3><p class="food-caption">Buah manis yang praktis dinikmati.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Pisang"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Pepaya" data-food-group="Buah" data-food-description="Buah berdaging lembut dengan warna matang yang cerah dan rasa manis." data-food-image="/assets/foods/food_papaya.png">
+                    <div class="food-card-top"><span class="food-chip">Buah</span><span class="food-index">10</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_papaya.png" alt="Pepaya"></div>
+                    <div class="food-body"><h3>Pepaya</h3><p class="food-caption">Buah lembut dengan warna matang yang cerah.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Pepaya"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Mangga" data-food-group="Buah" data-food-description="Buah yang dikenal dengan aroma khas dan rasa yang dapat manis maupun sedikit asam." data-food-image="/assets/foods/food_mango.png">
+                    <div class="food-card-top"><span class="food-chip">Buah</span><span class="food-index">11</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_mango.png" alt="Mangga"></div>
+                    <div class="food-body"><h3>Mangga</h3><p class="food-caption">Buah favorit dengan rasa manis segar.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Mangga"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Jambu Biji" data-food-group="Buah" data-food-description="Buah dengan tekstur renyah dan aroma segar yang dapat dinikmati langsung maupun dijadikan minuman." data-food-image="/assets/foods/food_guava.png">
+                    <div class="food-card-top"><span class="food-chip">Buah</span><span class="food-index">12</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_guava.png" alt="Jambu biji"></div>
+                    <div class="food-body"><h3>Jambu Biji</h3><p class="food-caption">Buah renyah yang menyegarkan.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Jambu Biji"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Ikan Lele" data-food-group="Ikan" data-food-description="Ikan air tawar yang banyak dibudidayakan dan sering dijadikan lauk dalam hidangan sehari-hari." data-food-image="/assets/foods/food_catfish.png">
+                    <div class="food-card-top"><span class="food-chip">Ikan</span><span class="food-index">13</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_catfish.png" alt="Ikan lele"></div>
+                    <div class="food-body"><h3>Ikan Lele</h3><p class="food-caption">Ikan air tawar yang populer untuk lauk.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Ikan Lele"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+                <div class="swiper-slide" data-food-card>
+                  <article class="food-card" role="button" tabindex="0" aria-pressed="false" data-food-name="Ikan Nila" data-food-group="Ikan" data-food-description="Ikan air tawar yang umum dibudidayakan dan dapat diolah dengan beragam cara." data-food-image="/assets/foods/food_tilapia.png">
+                    <div class="food-card-top"><span class="food-chip">Ikan</span><span class="food-index">14</span></div>
+                    <div class="food-visual"><img src="/assets/foods/food_tilapia.png" alt="Ikan nila"></div>
+                    <div class="food-body"><h3>Ikan Nila</h3><p class="food-caption">Ikan budidaya yang sering dijadikan lauk.</p></div>
+                    <button class="food-detail-trigger" type="button" data-food-detail aria-label="Lihat detail Ikan Nila"><span>Lihat Detail</span><span aria-hidden="true">↗</span></button>
+                  </article>
+                </div>
+              </div>
+              <div class="swiper-pagination spl-food-pagination" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade food-detail-modal" id="foodDetailModal" tabindex="-1" aria-labelledby="foodDetailTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content food-detail-modal-content">
+            <button class="food-modal-close" type="button" data-bs-dismiss="modal" aria-label="Tutup detail">×</button>
+            <div class="food-modal-grid">
+              <div class="food-modal-visual">
+                <img data-food-modal-image src="/assets/foods/food_rice.png" alt="">
+              </div>
+              <div class="food-modal-copy">
+                <p class="food-modal-group" data-food-modal-group>Pangan pokok</p>
+                <h3 id="foodDetailTitle" data-food-modal-title>Beras</h3>
+                <p data-food-modal-description>Sumber energi yang dekat dengan keseharian.</p>
+                <button class="food-modal-done" type="button" data-bs-dismiss="modal">Kembali ke Pangan</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-primary-section id="ketersediaan" class="availability-section download-cta-section" aria-labelledby="availability-title">
+      <div class="download-orb download-orb--a" aria-hidden="true"></div>
+      <div class="download-orb download-orb--b" aria-hidden="true"></div>
+
+      <div class="container position-relative">
+        <div class="download-shell">
+          <article class="download-promo-card" data-reveal="left">
+            <div class="download-promo-top">
+              <img class="download-game-logo" src="/assets/brand/logo_game.png" alt="" aria-hidden="true">
+              <div>
+                <p class="download-kicker">Mainkan Sekarang</p>
+                <span class="download-live-badge"><span aria-hidden="true"></span>Tersedia Sekarang</span>
+              </div>
+            </div>
+
+            <h2 id="availability-title" class="download-title">Petualanganmu siap dimainkan.</h2>
+            <p class="download-lead">Pilih perangkatmu, unduh Sahabat Pangan Lokal, lalu mulai perjalanan dari rumah hingga festival.</p>
+
+            <div class="download-feature-row" aria-label="Ringkasan permainan">
+              <span>5 Level</span>
+              <span>14 Pangan Lokal</span>
+              <span>2 Platform</span>
+            </div>
+
+            <div class="download-total-stat" aria-label="Total unduhan">
+              <span class="download-total-label">Total unduhan</span>
+              <strong data-download-counter data-download-target="16200" data-download-suffix="+">0</strong>
+              <small>Android + Windows</small>
+            </div>
+          </article>
+
+          <div class="download-platform-area">
+            <div class="download-platform-heading" data-reveal="up">
+              <p class="eyebrow mb-1">Pilih Platform</p>
+              <h3>Unduh dan mulai bermain.</h3>
+              <p>Tersedia untuk ponsel, tablet, PC, dan laptop.</p>
+            </div>
+
+            <div class="download-platform-grid">
+              <article class="download-platform-card download-platform-card--android" data-reveal="up" data-reveal-delay="0.06">
+                <div class="download-platform-card-head">
+                  <div class="download-platform-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                      <rect x="7" y="3.5" width="10" height="17" rx="2.2"></rect>
+                      <path d="M10 6.5h4M11 17.5h2"></path>
+                      <path class="download-icon-play" d="m11 9.2 4 2.8-4 2.8z"></path>
+                    </svg>
+                  </div>
+                  <span class="download-available-chip">Tersedia</span>
+                </div>
+
+                <div class="download-platform-copy">
+                  <p class="download-platform-kicker">Android</p>
+                  <h3>Untuk ponsel &amp; tablet</h3>
+                  <p>Mulai petualangan langsung dari perangkat Android-mu.</p>
+                </div>
+
+                <div class="download-platform-stat">
+                  <span>Sudah diunduh</span>
+                  <strong data-download-counter data-download-target="12480">0</strong>
+                  <small>kali</small>
+                </div>
+
+                <a class="download-button" href="/downloads/sahabat-pangan-lokal-android.apk" download>
+                  <span>Unduh Android</span>
+                  <span class="download-button-arrow" aria-hidden="true">↓</span>
+                </a>
+              </article>
+
+              <article class="download-platform-card download-platform-card--windows" data-reveal="up" data-reveal-delay="0.12">
+                <div class="download-platform-card-head">
+                  <div class="download-platform-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false">
+                      <path d="M4 5.5 10.5 4v7H4zm7.8-1.8L20 2v9h-8.2zM4 12.4h6.5v7L4 18.2zm7.8 0H20v9l-8.2-1.7z"></path>
+                    </svg>
+                  </div>
+                  <span class="download-available-chip">Tersedia</span>
+                </div>
+
+                <div class="download-platform-copy">
+                  <p class="download-platform-kicker">Windows</p>
+                  <h3>Untuk PC &amp; laptop</h3>
+                  <p>Mainkan dengan layar lebih luas melalui perangkat Windows.</p>
+                </div>
+
+                <div class="download-platform-stat">
+                  <span>Sudah diunduh</span>
+                  <strong data-download-counter data-download-target="3720">0</strong>
+                  <small>kali</small>
+                </div>
+
+                <a class="download-button download-button--orange" href="/downloads/Sahabat-Pangan-Lokal-Windows.zip" download>
+                  <span>Unduh Windows</span>
+                  <span class="download-button-arrow" aria-hidden="true">↓</span>
+                </a>
+              </article>
+            </div>
+
+            <p class="download-helper" data-reveal="up">
+              Pilih platform yang sesuai dengan perangkatmu dan mulai bermain.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <spl-footer data-page="home" data-primary-section id="footer"></spl-footer>
+</body>
+</html>
