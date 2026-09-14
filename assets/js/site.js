@@ -717,80 +717,591 @@
 
 /* SPL 08 DOWNLOAD CTA START */
 (function () {
+  'use strict';
+
   const section = document.querySelector('.download-cta-section');
+  const modal = document.getElementById('downloadPreflightModal');
 
-  if (!section) {
+  if (!section || !modal) {
     return;
   }
 
-  const counters = Array.from(
-    section.querySelectorAll('[data-download-counter]')
-  );
-
-  if (!counters.length) {
-    return;
-  }
+  const ENDPOINTS = Object.freeze({
+    stats: '/api/site/v1/download-stats',
+    preflight: '/api/site/v1/download-preflight',
+    start: '/api/site/v1/download-start'
+  });
+  const localPreview =
+    location.hostname === 'localhost' ||
+    location.hostname === '127.0.0.1' ||
+    location.hostname.endsWith('.test');
 
   const formatter = new Intl.NumberFormat('id-ID');
-  const reduceMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  ).matches;
+  const buttons = Array.from(section.querySelectorAll('[data-download-platform]'));
+  const counters = {
+    android: section.querySelector('[data-download-counter="android"]'),
+    windows: section.querySelector('[data-download-counter="windows"]'),
+    total: section.querySelector('[data-download-counter="total"]')
+  };
 
-  function renderCounter(element, value) {
-    const suffix = element.dataset.downloadSuffix || '';
-    element.textContent = formatter.format(Math.round(value)) + suffix;
+  const title = modal.querySelector('#downloadPreflightTitle');
+  const description = modal.querySelector('#downloadPreflightDescription');
+  const preview = modal.querySelector('[data-preflight-preview]');
+  const platformValue = modal.querySelector('[data-preflight-platform]');
+  const versionValue = modal.querySelector('[data-preflight-version]');
+  const sizeValue = modal.querySelector('[data-preflight-size]');
+  const trafficValue = modal.querySelector('[data-preflight-traffic]');
+  const latencyValue = modal.querySelector('[data-preflight-latency]');
+  const speedValue = modal.querySelector('[data-preflight-speed]');
+  const qualityValue = modal.querySelector('[data-preflight-quality]');
+  const metrics = modal.querySelector('[data-preflight-metrics]');
+  const message = modal.querySelector('[data-preflight-message]');
+  const retryButton = modal.querySelector('[data-preflight-retry]');
+  const finalButton = modal.querySelector('[data-preflight-final-download]');
+  const cancelButtons = Array.from(modal.querySelectorAll('[data-preflight-cancel]'));
+
+  const state = {
+    trigger: null,
+    platform: null,
+    downloadUrl: null,
+    token: null,
+    releaseVersion: null,
+    preflightStartedAt: 0,
+    readyAt: 0,
+    latencyMs: null,
+    estimatedMbps: null,
+    networkQuality: 'unknown',
+    serverStatus: 'unknown',
+    traffic: 'unknown',
+    submitting: false
+  };
+
+  function sleep(ms) {
+    return new Promise((resolve) => window.setTimeout(resolve, ms));
   }
 
-  function setFinalValues() {
-    counters.forEach((element) => {
-      const target = Number(element.dataset.downloadTarget || 0);
-      renderCounter(element, target);
+  function formatBytes(bytes) {
+    const value = Number(bytes);
+    if (!Number.isFinite(value) || value <= 0) {
+      return localPreview ? 'Pratinjau' : '-';
+    }
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let unit = 0;
+    let amount = value;
+    while (amount >= 1024 && unit < units.length - 1) {
+      amount /= 1024;
+      unit += 1;
+    }
+    const digits = amount >= 100 || unit === 0 ? 0 : 1;
+    return `${amount.toFixed(digits)} ${units[unit]}`;
+  }
+
+  function labelPlatform(platform) {
+    return platform === 'windows' ? 'Windows' : 'Android';
+  }
+
+  function labelTraffic(value) {
+    return {
+      low: 'Rendah',
+      moderate: 'Sedang',
+      high: 'Tinggi'
+    }[value] || 'Tidak tersedia';
+  }
+
+  function labelServer(value) {
+    return {
+      normal: 'Normal',
+      busy: 'Sedang ramai',
+      high_load: 'Trafik tinggi'
+    }[value] || 'Tidak tersedia';
+  }
+
+  function labelQuality(value) {
+    return {
+      excellent: 'Sangat Baik',
+      good: 'Baik',
+      fair: 'Cukup',
+      slow: 'Lambat',
+      unknown: 'Tidak dapat diukur'
+    }[value] || 'Tidak dapat diukur';
+  }
+
+  function setRow(name, status, text) {
+    const row = modal.querySelector(`[data-preflight-row="${name}"]`);
+    if (!row) {
+      return;
+    }
+    row.classList.remove('is-checking', 'is-ok', 'is-warning', 'is-error');
+    if (status) {
+      row.classList.add(`is-${status}`);
+    }
+    const value = row.querySelector('strong');
+    if (value) {
+      value.textContent = text;
+    }
+  }
+
+  function resetRows() {
+    ['package', 'integrity', 'server', 'network'].forEach((name) => {
+      setRow(name, '', 'Menunggu');
     });
   }
 
-  if (
-    reduceMotion ||
-    !window.gsap ||
-    !window.ScrollTrigger
-  ) {
-    setFinalValues();
-    return;
+  function getFocusable() {
+    return Array.from(modal.querySelectorAll(
+      'button:not([hidden]):not([disabled]), [href]:not([hidden]), [tabindex]:not([tabindex="-1"])'
+    )).filter((element) => !element.hasAttribute('hidden'));
   }
 
-  let played = false;
-
-  ScrollTrigger.create({
-    id: 'download-counter-sequence',
-    trigger: section,
-    start: 'top 72%',
-    once: true,
-    onEnter: function () {
-      if (played) {
-        return;
+  function openModal() {
+    modal.hidden = false;
+    document.body.classList.add('download-preflight-open');
+    const main = document.getElementById('main-content');
+    const navbar = document.querySelector('spl-navbar');
+    const footer = document.querySelector('spl-footer');
+    [main, navbar, footer].forEach((node) => {
+      if (node) {
+        node.inert = true;
       }
+    });
+    const closeButton = modal.querySelector('.download-preflight-close');
+    window.requestAnimationFrame(() => closeButton?.focus());
+  }
 
-      played = true;
+  function closeDownloadModal() {
+    if (state.submitting) {
+      return;
+    }
+    modal.hidden = true;
+    document.body.classList.remove('download-preflight-open');
+    const main = document.getElementById('main-content');
+    const navbar = document.querySelector('spl-navbar');
+    const footer = document.querySelector('spl-footer');
+    [main, navbar, footer].forEach((node) => {
+      if (node) {
+        node.inert = false;
+      }
+    });
+    state.trigger?.focus();
+  }
 
-      counters.forEach((element, index) => {
-        const target = Number(element.dataset.downloadTarget || 0);
-        const state = { value: 0 };
+  function resetModal() {
+    title.textContent = 'Menyiapkan unduhan';
+    description.textContent = 'Memeriksa paket Sahabat Pangan Lokal sebelum diunduh.';
+    preview.hidden = !localPreview;
+    platformValue.textContent = labelPlatform(state.platform);
+    versionValue.textContent = '-';
+    sizeValue.textContent = '-';
+    trafficValue.textContent = '-';
+    latencyValue.textContent = '-';
+    speedValue.textContent = '-';
+    qualityValue.textContent = '-';
+    metrics.hidden = true;
+    message.textContent = '';
+    message.classList.remove('is-error');
+    retryButton.hidden = true;
+    finalButton.hidden = true;
+    finalButton.disabled = false;
+    resetRows();
+  }
 
-        gsap.to(state, {
-          value: target,
-          duration: 1.45 + (index * .12),
-          ease: 'power2.out',
-          onUpdate: function () {
-            renderCounter(element, state.value);
-          },
-          onComplete: function () {
-            renderCounter(element, target);
-          }
-        });
+  async function fetchJson(url, options = {}) {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 3500);
+    try {
+      const response = await fetch(url, {
+        cache: 'no-store',
+        credentials: 'same-origin',
+        ...options,
+        signal: controller.signal
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const detail = data.detail || data.message || `HTTP ${response.status}`;
+        throw new Error(detail);
+      }
+      return data;
+    }
+    finally {
+      window.clearTimeout(timeout);
+    }
+  }
+
+  async function loadDownloadStats() {
+    if (localPreview) {
+      Object.values(counters).forEach((element) => {
+        if (element) {
+          element.textContent = '0';
+          element.title = 'Pratinjau lokal - statistik produksi tidak dimuat';
+        }
+      });
+      return;
+    }
+
+    try {
+      const data = await fetchJson(ENDPOINTS.stats);
+      const values = {
+        android: Number(data.android || 0),
+        windows: Number(data.windows || 0),
+        total: Number(data.total || 0)
+      };
+
+      Object.entries(values).forEach(([key, value]) => {
+        const element = counters[key];
+        if (element) {
+          element.textContent = formatter.format(value);
+        }
       });
     }
+    catch (error) {
+      Object.values(counters).forEach((element) => {
+        if (element) {
+          element.textContent = '-';
+          element.title = 'Statistik unduhan belum dapat dimuat';
+        }
+      });
+    }
+  }
+
+  async function runLatencyProbe(url, samples = 3) {
+    const values = [];
+    for (let index = 0; index < samples; index += 1) {
+      const started = performance.now();
+      try {
+        const separator = url.includes('?') ? '&' : '?';
+        const response = await fetch(
+          `${url}${separator}probe=${Date.now()}-${index}`,
+          { method: 'GET', cache: 'no-store' }
+        );
+        if (!response.ok) {
+          throw new Error('probe failed');
+        }
+        await response.text();
+        values.push(performance.now() - started);
+      }
+      catch (error) {
+        // Individual probe failures degrade gracefully.
+      }
+    }
+
+    if (!values.length) {
+      return null;
+    }
+
+    values.sort((a, b) => a - b);
+    return values[Math.floor(values.length / 2)];
+  }
+
+  async function runRangeSpeedProbe(downloadUrl, bytes = 131072) {
+    if (localPreview) {
+      const downlink = Number(navigator.connection?.downlink);
+      return Number.isFinite(downlink) && downlink > 0 ? downlink : null;
+    }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 4000);
+    const started = performance.now();
+
+    try {
+      const response = await fetch(downloadUrl, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: { Range: `bytes=0-${bytes - 1}` },
+        signal: controller.signal
+      });
+
+      if (!response.ok && response.status !== 206) {
+        return null;
+      }
+
+      const buffer = await response.arrayBuffer();
+      const elapsedSeconds = (performance.now() - started) / 1000;
+      if (!buffer.byteLength || elapsedSeconds <= 0) {
+        return null;
+      }
+
+      return (buffer.byteLength * 8) / elapsedSeconds / 1000000;
+    }
+    catch (error) {
+      return null;
+    }
+    finally {
+      window.clearTimeout(timeout);
+    }
+  }
+
+  function classifyNetwork(mbps, medianLatencyMs) {
+    if (!Number.isFinite(mbps) || mbps <= 0) {
+      return 'unknown';
+    }
+
+    let quality = 'slow';
+    if (mbps >= 20) {
+      quality = 'excellent';
+    }
+    else if (mbps >= 5) {
+      quality = 'good';
+    }
+    else if (mbps >= 1.5) {
+      quality = 'fair';
+    }
+
+    if (Number.isFinite(medianLatencyMs) && medianLatencyMs >= 300) {
+      const order = ['slow', 'fair', 'good', 'excellent'];
+      const index = order.indexOf(quality);
+      if (index > 0) {
+        quality = order[index - 1];
+      }
+    }
+
+    return quality;
+  }
+
+  function mockPreflight(platform) {
+    return {
+      ok: true,
+      platform,
+      release: {
+        version: '1.0.0-local',
+        version_code: platform === 'android' ? 100 : null,
+        size_bytes: 0,
+        integrity: 'verified'
+      },
+      server: {
+        status: 'normal',
+        traffic: 'low'
+      },
+      preflight_token: 'local-preview-token',
+      expires_in_seconds: 300
+    };
+  }
+
+  async function performPreflight() {
+    resetModal();
+    state.preflightStartedAt = performance.now();
+
+    setRow('package', 'checking', 'Memeriksa');
+    let data;
+
+    try {
+      if (localPreview) {
+        await sleep(180);
+        data = mockPreflight(state.platform);
+      }
+      else {
+        data = await fetchJson(
+          `${ENDPOINTS.preflight}?platform=${encodeURIComponent(state.platform)}`
+        );
+      }
+
+      if (!data?.ok || !data?.release || data.release.integrity !== 'verified') {
+        throw new Error('Paket belum dapat diverifikasi.');
+      }
+
+      state.token = data.preflight_token;
+      state.releaseVersion = data.release.version;
+      state.serverStatus = data.server?.status || 'unknown';
+      state.traffic = data.server?.traffic || 'unknown';
+
+      platformValue.textContent = labelPlatform(state.platform);
+      versionValue.textContent = data.release.version || '-';
+      sizeValue.textContent = formatBytes(data.release.size_bytes);
+
+      setRow('package', 'ok', 'Tersedia');
+      setRow('integrity', 'checking', 'Memverifikasi');
+      await sleep(localPreview ? 150 : 40);
+      setRow('integrity', 'ok', 'Terverifikasi');
+
+      setRow('server', 'checking', 'Memeriksa');
+      await sleep(localPreview ? 120 : 20);
+      const serverWarning = state.serverStatus === 'busy' || state.serverStatus === 'high_load';
+      setRow('server', serverWarning ? 'warning' : 'ok', labelServer(state.serverStatus));
+
+      setRow('network', 'checking', 'Mengukur');
+      const latencyUrl = localPreview ? location.href : ENDPOINTS.stats;
+      const [latency, speed] = await Promise.all([
+        runLatencyProbe(latencyUrl, 3),
+        runRangeSpeedProbe(state.downloadUrl, 131072)
+      ]);
+
+      state.latencyMs = Number.isFinite(latency) ? Math.round(latency) : null;
+      state.estimatedMbps = Number.isFinite(speed) ? Number(speed.toFixed(2)) : null;
+      state.networkQuality = classifyNetwork(state.estimatedMbps, state.latencyMs);
+
+      latencyValue.textContent = state.latencyMs === null ? 'Tidak tersedia' : `${state.latencyMs} ms`;
+      speedValue.textContent = state.estimatedMbps === null ? 'Tidak tersedia' : `${state.estimatedMbps.toFixed(1)} Mbps`;
+      qualityValue.textContent = labelQuality(state.networkQuality);
+      trafficValue.textContent = labelTraffic(state.traffic);
+      metrics.hidden = false;
+
+      const networkWarning = state.networkQuality === 'slow';
+      setRow(
+        'network',
+        networkWarning ? 'warning' : 'ok',
+        labelQuality(state.networkQuality)
+      );
+
+      title.textContent = 'Paket siap diunduh';
+      description.textContent = localPreview
+        ? 'Pratinjau lokal selesai. Tampilan dan alur modal siap diuji.'
+        : 'Semua pemeriksaan utama selesai. Unduhan dapat dimulai.';
+      message.textContent = serverWarning || networkWarning
+        ? 'Unduhan tetap tersedia, tetapi server atau koneksi sedang kurang optimal.'
+        : 'Paket resmi dan koneksi siap.';
+      state.readyAt = performance.now();
+      finalButton.hidden = false;
+    }
+    catch (error) {
+      const text = error?.name === 'AbortError'
+        ? 'Pemeriksaan melewati batas waktu. Silakan coba lagi.'
+        : (error?.message || 'Pemeriksaan belum dapat diselesaikan.');
+
+      title.textContent = 'Unduhan belum dapat dilanjutkan';
+      description.textContent = 'Pemeriksaan paket belum selesai.';
+      message.textContent = text;
+      message.classList.add('is-error');
+      retryButton.hidden = false;
+
+      const packageRow = modal.querySelector('[data-preflight-row="package"]');
+      if (packageRow?.classList.contains('is-checking')) {
+        setRow('package', 'error', 'Gagal');
+      }
+    }
+  }
+
+  async function submitDownloadStart() {
+    if (!state.token || state.submitting) {
+      return;
+    }
+
+    if (localPreview) {
+      finalButton.hidden = true;
+      message.textContent = 'Mode pratinjau lokal selesai. File tidak diunduh dan analytics tidak dicatat.';
+      title.textContent = 'Pratinjau selesai';
+      return;
+    }
+
+    state.submitting = true;
+    finalButton.disabled = true;
+    finalButton.textContent = 'Memulai unduhan...';
+
+    try {
+      const nav = navigator.userAgentData;
+      const body = {
+        preflight_token: state.token,
+        device_type: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+        os_family: nav?.platform || navigator.platform || 'unknown',
+        os_version: null,
+        browser_family: navigator.userAgentData?.brands?.[0]?.brand || 'browser',
+        browser_version: navigator.userAgentData?.brands?.[0]?.version || null,
+        latency_ms: state.latencyMs,
+        estimated_mbps: state.estimatedMbps,
+        network_quality: state.networkQuality,
+        client_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
+        client_utc_offset_minutes: -new Date().getTimezoneOffset(),
+        preflight_duration_ms: Math.max(0, Math.round(state.readyAt - state.preflightStartedAt)),
+        decision_delay_ms: Math.max(0, Math.round(performance.now() - state.readyAt))
+      };
+
+      const data = await fetchJson(ENDPOINTS.start, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (!data?.download_url) {
+        throw new Error('Server tidak memberikan URL unduhan.');
+      }
+
+      const anchor = document.createElement('a');
+      anchor.href = data.download_url;
+      anchor.download = '';
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+
+      message.textContent = 'Unduhan dimulai.';
+      window.setTimeout(() => {
+        state.submitting = false;
+        finalButton.disabled = false;
+        finalButton.textContent = 'Unduh Sekarang';
+        closeDownloadModal();
+        loadDownloadStats();
+      }, 500);
+    }
+    catch (error) {
+      state.submitting = false;
+      finalButton.disabled = false;
+      finalButton.textContent = 'Unduh Sekarang';
+      message.textContent = error?.message || 'Unduhan belum dapat dimulai. Silakan coba lagi.';
+      message.classList.add('is-error');
+      retryButton.hidden = false;
+    }
+  }
+
+  function openDownloadPreflight(platform, triggerElement) {
+    state.trigger = triggerElement;
+    state.platform = platform;
+    state.downloadUrl = triggerElement.dataset.downloadUrl;
+    state.token = null;
+    state.releaseVersion = null;
+    state.submitting = false;
+    openModal();
+    performPreflight();
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      openDownloadPreflight(button.dataset.downloadPlatform, button);
+    });
   });
+
+  retryButton.addEventListener('click', () => {
+    performPreflight();
+  });
+
+  finalButton.addEventListener('click', () => {
+    submitDownloadStart();
+  });
+
+  cancelButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      closeDownloadModal();
+    });
+  });
+
+  modal.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeDownloadModal();
+      return;
+    }
+
+    if (event.key !== 'Tab') {
+      return;
+    }
+
+    const focusable = getFocusable();
+    if (!focusable.length) {
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    }
+    else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  loadDownloadStats();
 })();
-/* SPL 08 DOWNLOAD CTA END */
+ /* SPL 08 DOWNLOAD CTA END */
 
 /* SPL 09 NAV FOOTER SCROLLSPY START */
 (function () {

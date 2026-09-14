@@ -166,30 +166,86 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('object-position: center center;', css)
         self.assertIn('transform: none;', css)
 
-    def test_download_cta_is_available_now_with_platform_counters(self):
+    def test_download_preflight_modal_and_real_counter_contract(self):
         html = self.read('index.html')
-        self.assertIn('class="availability-section download-cta-section"', html)
-        self.assertIn('Tersedia Sekarang', html)
-        self.assertIn('Unduh Android', html)
-        self.assertIn('Unduh Windows', html)
-        self.assertIn('/downloads/sahabat-pangan-lokal-android.apk', html)
-        self.assertIn('/downloads/Sahabat-Pangan-Lokal-Windows.zip', html)
-        self.assertEqual(html.count('data-download-counter'), 3)
-        self.assertIn('data-download-target="12480"', html)
-        self.assertIn('data-download-target="3720"', html)
-        self.assertIn('data-download-target="16200"', html)
-
         css = self.read('assets/css/site.css')
-        self.assertIn('/* SPL 08 DOWNLOAD CTA START */', css)
-        self.assertIn('.download-promo-card', css)
-        self.assertIn('.download-platform-grid', css)
-        self.assertIn('.download-button', css)
-
         js = self.read('assets/js/site.js')
-        self.assertIn('download-counter-sequence', js)
-        self.assertIn('[data-download-counter]', js)
-        self.assertIn("new Intl.NumberFormat('id-ID')", js)
+        privacy = self.read('privasi/index.html')
+        sql_path = ROOT / 'server/site_api/sql/001_init.sql'
+        self.assertTrue(
+            sql_path.exists(),
+            'site API SQL schema must exist after implementation'
+        )
+        sql = sql_path.read_text(encoding='utf-8')
 
+        self.assertIn('class="availability-section download-cta-section"', html)
+        self.assertEqual(html.count('data-download-counter='), 3)
+        self.assertIn('data-download-counter="android"', html)
+        self.assertIn('data-download-counter="windows"', html)
+        self.assertIn('data-download-counter="total"', html)
+        self.assertNotIn('data-download-target=', html)
+        self.assertNotIn('href="/downloads/sahabat-pangan-lokal-android.apk" download', html)
+        self.assertNotIn('href="/downloads/Sahabat-Pangan-Lokal-Windows.zip" download', html)
+        self.assertIn('data-download-platform="android"', html)
+        self.assertIn('data-download-platform="windows"', html)
+
+        self.assertIn('id="downloadPreflightModal"', html)
+        self.assertIn('role="dialog"', html)
+        self.assertIn('aria-modal="true"', html)
+        self.assertIn('data-preflight-status-list', html)
+        self.assertIn('data-preflight-final-download', html)
+        self.assertIn('aria-live="polite"', html)
+
+        self.assertIn('/* SPL 08D DOWNLOAD PREFLIGHT MODAL START */', css)
+        self.assertIn('.download-preflight-backdrop', css)
+        self.assertIn('.download-preflight-dialog', css)
+        self.assertIn('backdrop-filter: blur(', css)
+
+        self.assertIn('/api/site/v1/download-stats', js)
+        self.assertIn('/api/site/v1/download-preflight', js)
+        self.assertIn('/api/site/v1/download-start', js)
+        self.assertIn('runLatencyProbe', js)
+        self.assertIn('runRangeSpeedProbe', js)
+        self.assertIn('classifyNetwork', js)
+        self.assertIn('localPreview', js)
+        self.assertIn('location.hostname.endsWith(\'.test\')', js)
+
+        self.assertIn('lokasi perkiraan', privacy.lower())
+        self.assertIn('ip mentah', privacy.lower())
+        self.assertIn('gps', privacy.lower())
+        self.assertIn('waktu server', privacy.lower())
+
+        self.assertIn('CREATE TABLE IF NOT EXISTS site.release_metadata', sql)
+        self.assertIn('CREATE TABLE IF NOT EXISTS site.download_events', sql)
+        self.assertNotIn('raw_ip', sql.lower())
+        self.assertNotIn('latitude', sql.lower())
+        self.assertNotIn('longitude', sql.lower())
+    def test_download_preflight_modal_is_xl_structured_and_outside_inert_main(self):
+        html = self.read('index.html')
+        css = self.read('assets/css/site.css')
+        js = self.read('assets/js/site.js')
+
+        main_end = html.index('</main>')
+        modal_index = html.index('id="downloadPreflightModal"')
+        footer_index = html.index('<spl-footer', main_end)
+
+        self.assertGreater(modal_index, main_end)
+        self.assertLess(modal_index, footer_index)
+
+        self.assertIn('class="download-preflight-header"', html)
+        self.assertIn('class="download-preflight-body"', html)
+        self.assertIn('class="download-preflight-footer"', html)
+        self.assertIn('class="download-preflight-body-grid"', html)
+
+        self.assertIn('width: min(96vw, 1140px);', css)
+        self.assertIn('grid-template-rows: auto minmax(0, 1fr) auto;', css)
+        self.assertIn('.download-preflight-body {', css)
+        self.assertIn('overflow-y: auto;', css)
+        self.assertIn('overscroll-behavior: contain;', css)
+        self.assertIn('.download-preflight-footer {', css)
+
+        self.assertIn("const main = document.getElementById('main-content');", js)
+        self.assertIn('node.inert = true;', js)
     def test_download_cta_is_compact_and_android_only_on_mobile_tablet(self):
         html = self.read('index.html')
         self.assertIn('Petualanganmu siap dimainkan.', html)

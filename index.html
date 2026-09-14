@@ -336,7 +336,7 @@
 
             <div class="download-total-stat" aria-label="Total unduhan">
               <span class="download-total-label">Total unduhan</span>
-              <strong data-download-counter data-download-target="16200" data-download-suffix="+">0</strong>
+              <strong data-download-counter="total" aria-live="polite">-</strong>
               <small>Android + Windows</small>
             </div>
           </article>
@@ -368,15 +368,17 @@
                 </div>
 
                 <div class="download-platform-stat">
-                  <span>Sudah diunduh</span>
-                  <strong data-download-counter data-download-target="12480">0</strong>
+                  <span>Unduhan dimulai</span>
+                  <strong data-download-counter="android" aria-live="polite">-</strong>
                   <small>kali</small>
                 </div>
 
-                <a class="download-button" href="/downloads/sahabat-pangan-lokal-android.apk" download>
+                <button class="download-button" type="button"
+                  data-download-platform="android"
+                  data-download-url="/downloads/sahabat-pangan-lokal-android.apk">
                   <span>Unduh Android</span>
-                  <span class="download-button-arrow" aria-hidden="true">↓</span>
-                </a>
+                  <span class="download-button-arrow" aria-hidden="true">&darr;</span>
+                </button>
               </article>
 
               <article class="download-platform-card download-platform-card--windows" data-reveal="up" data-reveal-delay="0.12">
@@ -396,20 +398,22 @@
                 </div>
 
                 <div class="download-platform-stat">
-                  <span>Sudah diunduh</span>
-                  <strong data-download-counter data-download-target="3720">0</strong>
+                  <span>Unduhan dimulai</span>
+                  <strong data-download-counter="windows" aria-live="polite">-</strong>
                   <small>kali</small>
                 </div>
 
-                <a class="download-button download-button--orange" href="/downloads/Sahabat-Pangan-Lokal-Windows.zip" download>
+                <button class="download-button download-button--orange" type="button"
+                  data-download-platform="windows"
+                  data-download-url="/downloads/Sahabat-Pangan-Lokal-Windows.zip">
                   <span>Unduh Windows</span>
-                  <span class="download-button-arrow" aria-hidden="true">↓</span>
-                </a>
+                  <span class="download-button-arrow" aria-hidden="true">&darr;</span>
+                </button>
               </article>
             </div>
 
             <p class="download-helper" data-reveal="up">
-              Pilih platform yang sesuai dengan perangkatmu dan mulai bermain.
+              Pilih platform yang sesuai. Sistem akan memeriksa paket dan koneksi sebelum unduhan dimulai.
             </p>
           </div>
         </div>
@@ -417,6 +421,75 @@
     </section>
 
   </main>
+
+  <div id="downloadPreflightModal"
+    class="download-preflight-modal"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="downloadPreflightTitle"
+    aria-describedby="downloadPreflightDescription">
+    <div class="download-preflight-backdrop" data-preflight-cancel aria-hidden="true"></div>
+
+    <div class="download-preflight-dialog" role="document">
+      <header class="download-preflight-header">
+        <div class="download-preflight-head">
+          <div class="download-preflight-icon" aria-hidden="true">&darr;</div>
+          <div>
+            <p class="download-preflight-kicker">Pemeriksaan Unduhan</p>
+            <h2 id="downloadPreflightTitle">Menyiapkan unduhan</h2>
+            <p id="downloadPreflightDescription">Memeriksa paket Sahabat Pangan Lokal sebelum diunduh.</p>
+          </div>
+        </div>
+
+        <button class="download-preflight-close" type="button" data-preflight-cancel aria-label="Tutup pemeriksaan unduhan">&times;</button>
+      </header>
+
+      <div class="download-preflight-body">
+        <div class="download-preflight-preview" data-preflight-preview hidden>
+          Mode pratinjau lokal - tidak mencatat analytics dan tidak memulai file unduhan.
+        </div>
+
+        <div class="download-preflight-package">
+          <div><span>Platform</span><strong data-preflight-platform>-</strong></div>
+          <div><span>Versi</span><strong data-preflight-version>-</strong></div>
+          <div><span>Ukuran</span><strong data-preflight-size>-</strong></div>
+        </div>
+
+        <div class="download-preflight-body-grid">
+          <section class="download-preflight-panel" aria-label="Status pemeriksaan">
+            <h3>Status Pemeriksaan</h3>
+            <div class="download-preflight-status" data-preflight-status-list aria-live="polite">
+              <div data-preflight-row="package"><span class="download-preflight-dot"></span><span>Paket resmi</span><strong>Menunggu</strong></div>
+              <div data-preflight-row="integrity"><span class="download-preflight-dot"></span><span>Integritas</span><strong>Menunggu</strong></div>
+              <div data-preflight-row="server"><span class="download-preflight-dot"></span><span>Server</span><strong>Menunggu</strong></div>
+              <div data-preflight-row="network"><span class="download-preflight-dot"></span><span>Koneksi</span><strong>Menunggu</strong></div>
+            </div>
+          </section>
+
+          <section class="download-preflight-panel" aria-label="Ringkasan koneksi">
+            <h3>Ringkasan Koneksi</h3>
+            <div class="download-preflight-metrics" data-preflight-metrics hidden>
+              <div><span>Aktivitas</span><strong data-preflight-traffic>-</strong></div>
+              <div><span>Latensi</span><strong data-preflight-latency>-</strong></div>
+              <div><span>Kecepatan</span><strong data-preflight-speed>-</strong></div>
+              <div><span>Kualitas</span><strong data-preflight-quality>-</strong></div>
+            </div>
+          </section>
+        </div>
+
+        <p class="download-preflight-message" data-preflight-message aria-live="polite"></p>
+      </div>
+
+      <footer class="download-preflight-footer">
+        <div class="download-preflight-actions">
+          <button type="button" class="download-preflight-secondary" data-preflight-cancel>Batal</button>
+          <button type="button" class="download-preflight-secondary" data-preflight-retry hidden>Coba Lagi</button>
+          <button type="button" class="download-preflight-primary" data-preflight-final-download hidden>Unduh Sekarang <span aria-hidden="true">&darr;</span></button>
+        </div>
+      </footer>
+    </div>
+  </div>
 
   <spl-footer data-page="home" data-primary-section id="footer"></spl-footer>
 </body>

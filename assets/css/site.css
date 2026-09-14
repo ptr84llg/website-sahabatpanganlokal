@@ -2247,6 +2247,389 @@ spl-footer {
 
 /* SPL 08 DOWNLOAD CTA END */
 
+/* SPL 08D DOWNLOAD PREFLIGHT MODAL START */
+
+.download-button {
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+}
+
+.download-preflight-modal[hidden] {
+  display: none !important;
+}
+
+.download-preflight-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  display: grid;
+  place-items: center;
+  padding: clamp(.75rem, 2vw, 1.5rem);
+}
+
+.download-preflight-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 29, 16, .62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.download-preflight-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(96vw, 1140px);
+  max-height: min(92svh, 880px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.68);
+  border-radius: 1.8rem;
+  background:
+    radial-gradient(circle at 92% 7%, rgba(255, 210, 104, .20), transparent 28%),
+    #fbfdf5;
+  box-shadow: 0 2rem 5rem rgba(0, 32, 15, .32);
+}
+
+.download-preflight-header {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.25rem 1.4rem 1rem;
+  border-bottom: 1px solid rgba(8, 102, 53, .10);
+  background: rgba(251,253,245,.96);
+}
+
+.download-preflight-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.download-preflight-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 1.1rem;
+  color: #fff;
+  background: linear-gradient(145deg, #16a451, #087333);
+  box-shadow: 0 .8rem 1.5rem rgba(8, 115, 51, .20);
+  font-size: 1.35rem;
+  font-weight: 950;
+}
+
+.download-preflight-kicker {
+  margin: 0 0 .25rem;
+  color: #0d7134;
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.download-preflight-head h2 {
+  margin: 0 0 .3rem;
+  color: var(--spl-green-dark);
+  font-size: clamp(1.55rem, 3vw, 2.25rem);
+  font-weight: 950;
+  letter-spacing: -.035em;
+}
+
+.download-preflight-head p:last-child {
+  margin: 0;
+  color: #647568;
+  line-height: 1.45;
+}
+
+.download-preflight-close {
+  width: 2.55rem;
+  height: 2.55rem;
+  display: grid;
+  place-items: center;
+  align-self: start;
+  border: 0;
+  border-radius: 50%;
+  color: #315b43;
+  background: #fff;
+  box-shadow: 0 .45rem 1rem rgba(8,77,35,.10);
+  font-size: 1.45rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.download-preflight-body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1rem 1.4rem 1.15rem;
+  scrollbar-gutter: stable;
+}
+
+.download-preflight-preview {
+  padding: .7rem .85rem;
+  border: 1px solid #f0c77b;
+  border-radius: .9rem;
+  color: #7f5211;
+  background: #fff4d9;
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.download-preflight-package {
+  margin-top: .85rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .7rem;
+}
+
+.download-preflight-package > div,
+.download-preflight-metrics > div {
+  min-width: 0;
+  padding: .75rem .85rem;
+  border: 1px solid rgba(8, 102, 53, .09);
+  border-radius: .95rem;
+  background: #fff;
+}
+
+.download-preflight-package span,
+.download-preflight-metrics span {
+  display: block;
+  margin-bottom: .15rem;
+  color: #7a8d81;
+  font-size: .67rem;
+  font-weight: 850;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.download-preflight-package strong,
+.download-preflight-metrics strong {
+  display: block;
+  overflow: hidden;
+  color: var(--spl-green-dark);
+  font-size: .92rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.download-preflight-body-grid {
+  margin-top: .85rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+  gap: .85rem;
+  align-items: stretch;
+}
+
+.download-preflight-panel {
+  min-width: 0;
+  padding: .85rem;
+  border: 1px solid rgba(8, 102, 53, .08);
+  border-radius: 1.1rem;
+  background: rgba(242,247,237,.72);
+}
+
+.download-preflight-panel h3 {
+  margin: 0 0 .65rem;
+  color: var(--spl-green-dark);
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.download-preflight-status {
+  display: grid;
+  gap: .42rem;
+}
+
+.download-preflight-status > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: .65rem;
+  align-items: center;
+  min-height: 2.55rem;
+  padding: .56rem .7rem;
+  border-radius: .85rem;
+  color: #4f6758;
+  background: #fff;
+}
+
+.download-preflight-status strong {
+  font-size: .76rem;
+  font-weight: 900;
+}
+
+.download-preflight-dot {
+  width: .62rem;
+  height: .62rem;
+  border-radius: 50%;
+  background: #b5c0b8;
+  box-shadow: 0 0 0 .26rem rgba(132, 148, 137, .10);
+}
+
+.download-preflight-status > div.is-checking .download-preflight-dot {
+  background: #f2ad38;
+  animation: spl-preflight-pulse 900ms ease-in-out infinite alternate;
+}
+
+.download-preflight-status > div.is-ok .download-preflight-dot {
+  background: #34ad59;
+  box-shadow: 0 0 0 .26rem rgba(52, 173, 89, .12);
+}
+
+.download-preflight-status > div.is-warning .download-preflight-dot {
+  background: #f0a13a;
+}
+
+.download-preflight-status > div.is-error .download-preflight-dot {
+  background: #d9534f;
+  box-shadow: 0 0 0 .26rem rgba(217, 83, 79, .12);
+}
+
+.download-preflight-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .55rem;
+}
+
+.download-preflight-message {
+  min-height: 1.45em;
+  margin: .8rem 0 0;
+  color: #5e7265;
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
+.download-preflight-message.is-error {
+  color: #a93735;
+  font-weight: 800;
+}
+
+.download-preflight-footer {
+  position: relative;
+  z-index: 2;
+  padding: .9rem 1.4rem 1rem;
+  border-top: 1px solid rgba(8, 102, 53, .10);
+  background: rgba(251,253,245,.98);
+}
+
+.download-preflight-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+
+.download-preflight-primary,
+.download-preflight-secondary {
+  min-height: 2.8rem;
+  padding: .68rem 1rem;
+  border: 0;
+  border-radius: .9rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.download-preflight-primary {
+  color: #fff;
+  background: #087638;
+  box-shadow: 0 .7rem 1.2rem rgba(8, 118, 56, .18);
+}
+
+.download-preflight-secondary {
+  color: #315b43;
+  background: #edf4e9;
+}
+
+body.download-preflight-open {
+  overflow: hidden;
+}
+
+@keyframes spl-preflight-pulse {
+  from { transform: scale(.82); opacity: .65; }
+  to { transform: scale(1.12); opacity: 1; }
+}
+
+@media (max-width: 767.98px) {
+  .download-preflight-modal {
+    padding: .5rem;
+  }
+
+  .download-preflight-dialog {
+    width: min(100%, 720px);
+    max-height: 94svh;
+    border-radius: 1.35rem;
+  }
+
+  .download-preflight-header {
+    padding: 1rem;
+  }
+
+  .download-preflight-head {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: .75rem;
+  }
+
+  .download-preflight-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .download-preflight-body {
+    padding: .85rem 1rem 1rem;
+  }
+
+  .download-preflight-package {
+    grid-template-columns: 1fr;
+  }
+
+  .download-preflight-body-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .download-preflight-footer {
+    padding: .8rem 1rem .9rem;
+  }
+
+  .download-preflight-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .download-preflight-primary {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 420px) {
+  .download-preflight-head {
+    grid-template-columns: 1fr;
+  }
+
+  .download-preflight-icon {
+    display: none;
+  }
+
+  .download-preflight-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .download-preflight-status > div.is-checking .download-preflight-dot {
+    animation: none !important;
+  }
+}
+
+/* SPL 08D DOWNLOAD PREFLIGHT MODAL END */
 /* SPL 08C COMPACT DOWNLOAD MOBILE START */
 
 /*
