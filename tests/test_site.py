@@ -31,6 +31,16 @@ class SiteContractTests(unittest.TestCase):
             self.assertRegex(html, r'class="[^"]*\bcontainer\b', rel)
             self.assertIn('navbar', html, rel)
 
+
+    def test_public_pages_cache_bust_active_site_css_and_js(self):
+        css_url = '/assets/css/site.css?v=879dd7f268a9'
+        js_url = '/assets/js/site.js?v=14f3b3eb6ae4'
+        for rel in PUBLIC_PAGES:
+            html = self.read(rel)
+            self.assertIn(css_url, html, rel)
+            self.assertIn(js_url, html, rel)
+            self.assertNotIn('href="/assets/css/site.css"', html, rel)
+            self.assertNotIn('src="/assets/js/site.js"', html, rel)
     def test_animation_stack_is_gsap_scrolltrigger_everywhere(self):
         gsap_asset = ROOT / 'assets/vendor/gsap-3.15.0.min.js'
         trigger_asset = ROOT / 'assets/vendor/ScrollTrigger-3.15.0.min.js'
