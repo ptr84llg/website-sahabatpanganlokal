@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections import deque
 from datetime import datetime, timezone
-import hashlib
 import os
 from pathlib import Path
 import time
@@ -21,6 +20,7 @@ from .db import (
     record_download_start,
 )
 from .health import classify_server_status, classify_traffic
+from .integrity import sha256_file
 from .models import DownloadStartInput
 from .tokens import TokenError, create_preflight_token, verify_preflight_token
 
@@ -169,6 +169,10 @@ def download_preflight(platform: str):
     stored_hash = str(release["sha256"] or "").lower()
     if len(stored_hash) != 64:
         raise HTTPException(status_code=503, detail="Metadata integritas belum tersedia.")
+
+    actual_hash = sha256_file(package_path)
+    if actual_hash != stored_hash:
+        raise HTTPException(status_code=503, detail="Integritas paket tidak sesuai metadata.")
 
     nonce = uuid4()
     token = create_preflight_token(

@@ -6,6 +6,12 @@ redir /status.html /status/ 301
 
 @staticAssets path /assets/*
 header @staticAssets Cache-Control "public, max-age=604800"
+# SITE DOWNLOAD API START
+@siteDownloadApi path /api/site/v1/*
+header @siteDownloadApi Cache-Control "no-store"
+reverse_proxy @siteDownloadApi 127.0.0.1:8001
+# SITE DOWNLOAD API END
+
 # GAME UPDATE DISTRIBUTION START
 # `/updates/` adalah namespace terpisah dari `/assets/`.
 @gameUpdateManifest path /updates/manifest.json

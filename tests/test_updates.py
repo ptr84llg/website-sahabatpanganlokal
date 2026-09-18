@@ -66,6 +66,7 @@ class UpdateDistributionContractTests(unittest.TestCase):
         value = self.manifest["save"]["schema_version"]
         self.assertIsInstance(value, int)
         self.assertGreater(value, 0)
+        self.assertEqual(value, 3)
 
     def test_content_base_contract(self):
         content = self.manifest["content"]
@@ -160,6 +161,18 @@ class UpdateDistributionContractTests(unittest.TestCase):
         self.assertRegex(
             caddy,
             r'header @gameUpdatePackages Cache-Control "public, max-age=31536000, immutable"',
+        )
+
+    def test_caddy_site_api_route_contract(self):
+        caddy = self.read_text("Caddyfile.example")
+        self.assertIn("@siteDownloadApi path /api/site/v1/*", caddy)
+        self.assertIn(
+            'header @siteDownloadApi Cache-Control "no-store"',
+            caddy,
+        )
+        self.assertIn(
+            "reverse_proxy @siteDownloadApi 127.0.0.1:8001",
+            caddy,
         )
 
     def test_robots_discourages_update_indexing(self):

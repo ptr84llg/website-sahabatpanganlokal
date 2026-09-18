@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "channel": "stable",
-  "generated_at": "2026-09-12T00:00:00+07:00",
+  "generated_at": "2026-09-18T09:20:30+07:00",
   "app": {
     "version": "1.0.0",
     "version_code": 100,
@@ -21,6 +21,6 @@
     "sha256": ""
   },
   "save": {
-    "schema_version": 1
+    "schema_version": 3
   }
 }

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
+import hashlib
+import importlib.util
+import tempfile
 from pathlib import Path
 import sys
 import unittest
@@ -39,6 +42,32 @@ class SiteApiCoreTests(unittest.TestCase):
         tampered = ("A" if body[0] != "A" else "B") + body[1:] + "." + signature
         with self.assertRaises(TokenError):
             verify_preflight_token(tampered, now, self.SECRET)
+
+    def test_sha256_file_hashes_real_file(self):
+        module_path = ROOT / "integrity.py"
+        self.assertTrue(module_path.is_file(), "integrity.py missing")
+
+        spec = importlib.util.spec_from_file_location(
+            "site_api_integrity_test",
+            module_path,
+        )
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        payload = b"sahabat-pangan-lokal-integrity-test"
+        with tempfile.TemporaryDirectory() as temp_dir:
+            sample = Path(temp_dir) / "sample.bin"
+            sample.write_bytes(payload)
+            expected = hashlib.sha256(payload).hexdigest()
+            self.assertEqual(module.sha256_file(sample), expected)
+
+    def test_preflight_uses_actual_package_sha256(self):
+        source = (ROOT / "app.py").read_text(encoding="utf-8")
+        self.assertIn("from .integrity import sha256_file", source)
+        self.assertIn("actual_hash = sha256_file(package_path)", source)
+        self.assertIn("if actual_hash != stored_hash:", source)
 
     def test_traffic_thresholds(self):
         self.assertEqual(classify_traffic(0), "low")
